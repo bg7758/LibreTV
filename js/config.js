@@ -34,10 +34,7 @@ const API_SITES = {
         api: 'https://bfzyapi.com/api.php/provide/vod',
         name: '暴风资源',
     },
-    tyyszy: {
-        api: 'https://tyyszy.com/api.php/provide/vod',
-        name: '天涯资源',
-    },
+    
     // xiaomaomi: {
     //     api: 'https://zy.xiaomaomi.cc/api.php/provide/vod',
     //     name: '小猫咪资源',
@@ -46,6 +43,10 @@ const API_SITES = {
         api: 'http://ffzy5.tv/api.php/provide/vod',
         name: '非凡影视',
         detail: 'http://ffzy5.tv', 
+    },
+    tyyszy: {
+        api: 'https://tyyszy.com/api.php/provide/vod',
+        name: '天涯资源',
     },
     heimuer: {
         api: 'https://json.heimuer.xyz/api.php/provide/vod',
