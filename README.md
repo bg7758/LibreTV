@@ -8,7 +8,7 @@
 
 ## 📺 项目简介
 
-LibreTV 是一个轻量级、免费的在线视频搜索与观看平台，提供来自多个视频源的内容搜索与播放服务。无需注册，即开即用，支持多种设备访问。项目结合了前端技术和后端代理功能，可部署在支持服务端功能的各类网站托管服务上。
+LibreTV 是一个轻量级、免费的在线视频搜索与观看平台，提供来自多个视频源的内容搜索与播放服务。无需注册，即开即用，支持多种设备访问。项目结合了前端技术和后端代理功能，可部署在支持服务端功能的各类网站托管服务上。**项目门户**： [libretv.is-an.org](https://libretv.is-an.org)
 
 本项目基于 [bestK/tv](https://github.com/bestK/tv) 进行重构与增强。
 
@@ -75,7 +75,8 @@ Pull Bot 会反复触发无效的 PR 和垃圾邮件，严重干扰项目维护�
    - 构建命令：留空（无需构建）
    - 输出目录：留空（默认为根目录）
 5. **⚠️ 重要：在"设置" > "环境变量"中添加 `PASSWORD` 变量**
-6. 点击"保存并部署"
+6. **可选：在"Settings" > "Environment Variables"中添加 `ADMINPASSWORD` 变量**
+7. 点击"保存并部署"
 
 ### Vercel
 
@@ -83,25 +84,43 @@ Pull Bot 会反复触发无效的 PR 和垃圾邮件，严重干扰项目维护�
 2. 登录 [Vercel](https://vercel.com/)，点击"New Project"
 3. 导入您的仓库，使用默认设置
 4. **⚠️ 重要：在"Settings" > "Environment Variables"中添加 `PASSWORD` 变量**
-5. 点击"Deploy"
-6. 可选：在"Settings" > "Environment Variables"中配置密码保护
+5. **可选：在"Settings" > "Environment Variables"中添加 `ADMINPASSWORD` 变量**
+6. 点击"Deploy"
+7. 可选：在"Settings" > "Environment Variables"中配置密码保护和设置按钮密码保护
+
+### Docker
+```
+docker run -d \
+  --name libretv \
+  --restart unless-stopped \
+  -p 8899:8080 \
+  -e PASSWORD=your_password \
+  -e ADMINPASSWORD=your_adminpassword \
+  bestzwei/libretv:latest
+```
 
 ### Docker Compose
 
-获取最新 `docker-compose.yml`：
+`docker-compose.yml` 文件：
 
-```bash
-wget https://raw.githubusercontent.com/LibreSpark/LibreTV/main/docker-compose.yml
+```yaml
+services:
+  libretv:
+    image: bestzwei/libretv:latest
+    container_name: libretv
+    ports:
+      - "8899:8080" # 将内部 8080 端口映射到主机的 8899 端口
+    environment:
+      - PASSWORD=${PASSWORD:-your_password} # 可将 your_password 修改为你想要的密码，默认为 your_password
+      - ADMINPASSWORD=${PASSWORD:-your_adminpassword} # 可将 your_adminpassword 修改为你想要的密码，默认为 your_adminpassword
+    restart: unless-stopped
 ```
 启动 LibreTV：
 
 ```bash
-mkdir data
 docker compose up -d
 ```
 访问 `http://localhost:8899` 即可使用。
-
-- 已将容器内部目录映射到 `./data`，可在此目录中进行修改配置等操作
 
 ### 本地开发环境
 
@@ -131,12 +150,16 @@ npm run dev
 **环境变量名**: `PASSWORD` 
 **值**: 您想设置的密码
 
+**环境变量名**: `ADMINPASSWORD` 
+**值**: 您想设置的密码
+
 各平台设置方法：
 
 - **Cloudflare Pages**: Dashboard > 您的项目 > 设置 > 环境变量
 - **Vercel**: Dashboard > 您的项目 > Settings > Environment Variables
 - **Netlify**: Dashboard > 您的项目 > Site settings > Build & deploy > Environment
-- **Docker Compose**: 编辑 `PASSWORD=${PASSWORD:-111111}` 环境变量
+- **Docker**: 修改 `docker run` 中 `your_password` 为你的密码
+- **Docker Compose**: 修改 `docker-compose.yml` 中的 `your_password` 为你的密码
 - **本地开发**: SET PASSWORD=your_password
 
 ### API兼容性
@@ -175,6 +198,10 @@ LibreTV 支持标准的苹果 CMS V10 API 格式。添加自定义 API 时需遵
 LibreTV 仅作为视频搜索工具，不存储、上传或分发任何视频内容。所有视频均来自第三方 API 接口提供的搜索结果。如有侵权内容，请联系相应的内容提供方。
 
 本项目开发者不对使用本项目产生的任何后果负责。使用本项目时，您必须遵守当地的法律法规。
+
+## 🎉 贡献者福利
+
+活跃贡献者可以在 [Issue #268](https://github.com/LibreSpark/LibreTV/issues/268) 中留言，申请免费上车 1Password Team，享受团队协作工具的便利！
 
 ## 💝 支持项目
 
